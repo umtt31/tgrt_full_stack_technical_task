@@ -54,10 +54,10 @@ cp .env.example .env
 docker-compose up --build
 ```
 
-## 🔧 Manuel Kurulum (Development)
+## Manuel Kurulum (Development)
 
 ### Backend
-``bash
+```bash
 cd backend
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
