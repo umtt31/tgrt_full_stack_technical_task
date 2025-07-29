@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş - Haber İçerik Çıkarıcı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/style.css">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card mt-5">
+                    <div class="card-header text-center">
+                        <h4>Giriş Yap</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Kullanıcı Adı</label>
+                                <input type="text" class="form-control" id="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Şifre</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                            </div>
+                        </form>
+                        <div class="text-center mt-3">
+                            <p>Hesabınız yok mu? <a href="register.html">Kayıt olun</a></p>
+                        </div>
+                        <div id="alert" class="alert alert-danger d-none" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="public/js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Redirect if already logged in
+            if (isAuthenticated()) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const alertDiv = document.getElementById('alert');
+                
+                const result = await login(username, password);
+                
+                if (result.success) {
+                    window.location.href = 'index.html';
+                } else {
+                    alertDiv.textContent = result.error;
+                    alertDiv.classList.remove('d-none');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

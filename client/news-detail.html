@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Haber Detayı - Haber İçerik Çıkarıcı</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="public/css/style.css" />
+    <style>
+      .news-content {
+        line-height: 1.8;
+        font-size: 1.1rem;
+      }
+      .news-meta {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .news-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .back-button {
+        margin-bottom: 20px;
+      }
+      .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Haber Çıkarıcı</a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="index.html">Ana Sayfa</a>
+          <a class="nav-link" href="dashboard.html">Dashboard</a>
+          <span class="navbar-text me-3" id="username"></span>
+          <button class="btn btn-outline-light" onclick="logout()">
+            Çıkış
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <div class="back-button">
+        <button class="btn btn-outline-secondary" onclick="goBack()">
+          ← Geri Dön
+        </button>
+      </div>
+
+      <div id="loading" class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Yükleniyor...</span>
+        </div>
+        <span class="ms-3">Haber detayları yükleniyor...</span>
+      </div>
+
+      <div id="newsDetail" class="d-none">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="card">
+              <div class="card-body">
+                <h1 id="newsTitle" class="card-title mb-4"></h1>
+
+                <div id="newsImageContainer" class="mb-4 d-none">
+                  <img id="newsImage" class="news-image" alt="Haber görseli" />
+                </div>
+
+                <div id="newsContent" class="news-content"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Haber Bilgileri</h5>
+              </div>
+              <div class="card-body">
+                <div class="news-meta">
+                  <div class="row mb-3">
+                    <div class="col-4"><strong>Kaynak:</strong></div>
+                    <div class="col-8">
+                      <a
+                        id="newsUrl"
+                        href="#"
+                        target="_blank"
+                        class="text-decoration-none"
+                      ></a>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-4"><strong>Yayın Tarihi:</strong></div>
+                    <div class="col-8" id="publishDate"></div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-4"><strong>Eklenme Tarihi:</strong></div>
+                    <div class="col-8" id="createdDate"></div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-4"><strong>Kelime Sayısı:</strong></div>
+                    <div class="col-8" id="wordCount"></div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-4"><strong>Okuma Süresi:</strong></div>
+                    <div class="col-8" id="readingTime"></div>
+                  </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                  <button class="btn btn-primary" onclick="openOriginalUrl()">
+                    Orijinal Haberi Görüntüle
+                  </button>
+                  <button class="btn btn-danger" onclick="deleteNews()">
+                    Haberi Sil
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+        <h4 class="alert-heading">Hata!</h4>
+        <p id="errorText"></p>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="public/js/auth.js"></script>
+    <script src="public/js/news-detail.js"></script>
+  </body>
+</html>
