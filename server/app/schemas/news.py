@@ -1,4 +1,4 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, ConfigDict
 from datetime import datetime
 from typing import Optional
 
@@ -20,5 +20,4 @@ class NewsResponse(NewsBase):
     created_at: datetime
     user_id: int
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
