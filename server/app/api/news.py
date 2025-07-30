@@ -6,9 +6,10 @@ from app.models.user import User
 from app.models.news import NewsArticle
 from app.schemas.news import NewsCreate, NewsResponse
 from app.services.auth import AuthService
-from app.services.news_extractor import NewsExtractor
+from app.services.advanced_extractor import AdvancedNewsExtractor
 from app.services.media_processor import MediaProcessor
 from app.config import settings
+import asyncio
 
 router = APIRouter()
 
@@ -18,10 +19,19 @@ async def extract_news(
     db: Session = Depends(get_db),
     current_user: User = Depends(AuthService.get_current_user)
 ):
-    extracted = NewsExtractor.extract_content(str(news_data.url))
+    # Use the advanced extractor for better metadata extraction
+    extracted = await AdvancedNewsExtractor.extract_with_metadata(str(news_data.url))
     
     if not extracted["success"]:
         raise HTTPException(status_code=400, detail=extracted["error"])
+    
+    # Extract enhanced metadata
+    meta_keywords = None
+    if "tags" in extracted and extracted["tags"]:
+        import json
+        meta_keywords = json.dumps(extracted["tags"])
+    
+    meta_lang = extracted.get("language")
     
     db_news = NewsArticle(
         url=str(news_data.url),
@@ -29,6 +39,8 @@ async def extract_news(
         content=extracted["content"],
         publish_date=extracted["publish_date"] if extracted["publish_date"] else None,
         image_url=extracted["image_url"],
+        meta_keywords=meta_keywords,
+        meta_lang=meta_lang,
         user_id=current_user.id
     )
     

@@ -91,6 +91,57 @@ function initializeNewsTable() {
         },
       },
       {
+        data: "meta_lang",
+        render: function (data) {
+          if (!data) return "Belirtilmemiş";
+
+          const languageNames = {
+            tr: "Türkçe",
+            en: "İngilizce",
+            ar: "Arapça",
+            he: "İbranice",
+            fr: "Fransızca",
+            de: "Almanca",
+            es: "İspanyolca",
+            it: "İtalyanca",
+            ru: "Rusça",
+            zh: "Çince",
+            ja: "Japonca",
+            ko: "Korece",
+          };
+          const languageName = languageNames[data] || data.toUpperCase();
+          return `<span class="language-badge">${languageName}</span>`;
+        },
+      },
+      {
+        data: "meta_keywords",
+        render: function (data) {
+          if (!data) return "Belirtilmemiş";
+
+          try {
+            const keywords = JSON.parse(data);
+            if (Array.isArray(keywords) && keywords.length > 0) {
+              const keywordTags = keywords
+                .slice(0, 3)
+                .map((keyword) => `<span class="keyword-tag">${keyword}</span>`)
+                .join("");
+              const moreText =
+                keywords.length > 3 ? ` +${keywords.length - 3} daha` : "";
+              return (
+                keywordTags +
+                (moreText ? `<span class="text-muted">${moreText}</span>` : "")
+              );
+            }
+          } catch (e) {
+            // If parsing fails, try to display as string
+            if (data.trim()) {
+              return `<span class="keyword-tag">${data}</span>`;
+            }
+          }
+          return "Belirtilmemiş";
+        },
+      },
+      {
         data: "publish_date",
         render: function (data) {
           return data

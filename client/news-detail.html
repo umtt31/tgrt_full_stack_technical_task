@@ -35,6 +35,24 @@
         align-items: center;
         height: 200px;
       }
+      .keyword-tag {
+        display: inline-block;
+        background-color: #e9ecef;
+        color: #495057;
+        padding: 4px 8px;
+        margin: 2px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+      }
+      .language-badge {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
     </style>
   </head>
   <body>
@@ -112,6 +130,11 @@
                   </div>
 
                   <div class="row mb-3">
+                    <div class="col-4"><strong>Dil:</strong></div>
+                    <div class="col-8" id="metaLanguage"></div>
+                  </div>
+
+                  <div class="row mb-3">
                     <div class="col-4"><strong>Kelime Sayısı:</strong></div>
                     <div class="col-8" id="wordCount"></div>
                   </div>
@@ -119,6 +142,17 @@
                   <div class="row mb-3">
                     <div class="col-4"><strong>Okuma Süresi:</strong></div>
                     <div class="col-8" id="readingTime"></div>
+                  </div>
+
+                  <div
+                    class="row mb-3"
+                    id="keywordsSection"
+                    style="display: none"
+                  >
+                    <div class="col-12">
+                      <strong>Anahtar Kelimeler:</strong>
+                      <div id="metaKeywords" class="mt-2"></div>
+                    </div>
                   </div>
                 </div>
 

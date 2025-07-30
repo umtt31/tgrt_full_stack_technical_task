@@ -15,6 +15,8 @@ class NewsArticle(Base):
     processed_image_url = Column(String)
     video_url = Column(String)
     processed_video_url = Column(String)
+    meta_keywords = Column(Text)  # Store as JSON string
+    meta_lang = Column(String)
     user_id = Column(Integer, ForeignKey("users.id"))
     created_at = Column(DateTime, default=datetime.utcnow)
     
