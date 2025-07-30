@@ -3,7 +3,6 @@ from app.config import settings
 from app.services.media_processor import MediaProcessor
 import os
 
-# Initialize Celery
 celery_app = Celery(
     "tgrt_full_stack_technical_task",
     broker=settings.REDIS_URL,
@@ -20,7 +19,6 @@ celery_app.conf.update(
 
 @celery_app.task
 def process_image_watermark(image_url: str, watermark_text: str) -> str:
-    """Background task to add watermark to image"""
     try:
         result = MediaProcessor.add_watermark(image_url, watermark_text)
         return result
@@ -30,7 +28,6 @@ def process_image_watermark(image_url: str, watermark_text: str) -> str:
 
 @celery_app.task
 def process_video_intro(video_url: str, intro_path: str) -> str:
-    """Background task to add intro to video"""
     try:
         result = MediaProcessor.add_video_intro(video_url, intro_path)
         return result
@@ -40,9 +37,7 @@ def process_video_intro(video_url: str, intro_path: str) -> str:
 
 @celery_app.task
 def cleanup_temp_files():
-    """Background task to clean up temporary media files"""
     try:
-        # Clean up files older than 24 hours
         import time
         import glob
         

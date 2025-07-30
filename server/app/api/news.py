@@ -18,13 +18,11 @@ async def extract_news(
     db: Session = Depends(get_db),
     current_user: User = Depends(AuthService.get_current_user)
 ):
-    # Extract content
     extracted = NewsExtractor.extract_content(str(news_data.url))
     
     if not extracted["success"]:
         raise HTTPException(status_code=400, detail=extracted["error"])
     
-    # Create news article
     db_news = NewsArticle(
         url=str(news_data.url),
         title=extracted["title"],
@@ -34,7 +32,6 @@ async def extract_news(
         user_id=current_user.id
     )
     
-    # Process media if available
     if extracted["image_url"]:
         processed_image = MediaProcessor.add_watermark(
             extracted["image_url"], 

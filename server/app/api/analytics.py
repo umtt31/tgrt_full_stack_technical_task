@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
-from typing import List, Dict, Optional
 from datetime import datetime, timedelta
 from app.database import get_db
 from app.models.user import User
@@ -15,24 +14,20 @@ async def get_user_stats(
     current_user: User = Depends(AuthService.get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get user's content statistics overview"""
     
     total_articles = db.query(NewsArticle).filter(NewsArticle.user_id == current_user.id).count()
     
-    # Articles in last 30 days
     thirty_days_ago = datetime.utcnow() - timedelta(days=30)
     recent_articles = db.query(NewsArticle).filter(
         NewsArticle.user_id == current_user.id,
         NewsArticle.created_at >= thirty_days_ago
     ).count()
     
-    # Articles with images
     articles_with_images = db.query(NewsArticle).filter(
         NewsArticle.user_id == current_user.id,
         NewsArticle.image_url.isnot(None)
     ).count()
     
-    # Most recent article
     latest_article = db.query(NewsArticle).filter(
         NewsArticle.user_id == current_user.id
     ).order_by(desc(NewsArticle.created_at)).first()
@@ -50,7 +45,6 @@ async def get_extraction_timeline(
     current_user: User = Depends(AuthService.get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get daily extraction counts for timeline chart"""
     
     start_date = datetime.utcnow() - timedelta(days=days)
     
@@ -72,7 +66,6 @@ async def get_top_domains(
     current_user: User = Depends(AuthService.get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get most extracted domains"""
     
     articles = db.query(NewsArticle.url).filter(
         NewsArticle.user_id == current_user.id
@@ -87,7 +80,6 @@ async def get_top_domains(
         except:
             continue
     
-    # Sort by count and limit
     sorted_domains = sorted(domain_counts.items(), key=lambda x: x[1], reverse=True)[:limit]
     
     return [{"domain": domain, "count": count} for domain, count in sorted_domains]

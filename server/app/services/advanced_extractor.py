@@ -9,7 +9,6 @@ from app.services.news_extractor import NewsExtractor
 class AdvancedNewsExtractor(NewsExtractor):
     @staticmethod
     async def extract_with_metadata(url: str) -> Dict:
-        """Enhanced extraction with social media metadata"""
         basic_content = NewsExtractor.extract_content(url)
         
         if not basic_content["success"]:
@@ -20,13 +19,10 @@ class AdvancedNewsExtractor(NewsExtractor):
                 async with session.get(url) as response:
                     html = await response.text()
                     
-                    # Extract Open Graph metadata
                     og_data = AdvancedNewsExtractor._extract_og_metadata(html)
                     
-                    # Extract structured data (JSON-LD)
                     structured_data = AdvancedNewsExtractor._extract_structured_data(html)
                     
-                    # Enhanced content
                     enhanced_content = {
                         **basic_content,
                         "og_data": og_data,
@@ -44,7 +40,6 @@ class AdvancedNewsExtractor(NewsExtractor):
     
     @staticmethod
     def _extract_og_metadata(html: str) -> Dict:
-        """Extract Open Graph metadata"""
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(html, 'html.parser')
         
@@ -61,7 +56,6 @@ class AdvancedNewsExtractor(NewsExtractor):
     
     @staticmethod
     def _extract_structured_data(html: str) -> List[Dict]:
-        """Extract JSON-LD structured data"""
         import json
         from bs4 import BeautifulSoup
         
@@ -80,13 +74,11 @@ class AdvancedNewsExtractor(NewsExtractor):
     
     @staticmethod
     def _calculate_reading_time(content: str, wpm: int = 200) -> int:
-        """Calculate estimated reading time in minutes"""
         word_count = len(content.split())
         return max(1, round(word_count / wpm))
     
     @staticmethod
     def _detect_language(content: str) -> Optional[str]:
-        """Simple language detection"""
         try:
             from langdetect import detect
             return detect(content)
@@ -95,22 +87,19 @@ class AdvancedNewsExtractor(NewsExtractor):
     
     @staticmethod
     def _extract_tags(html: str) -> List[str]:
-        """Extract article tags/keywords"""
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(html, 'html.parser')
         
         tags = []
         
-        # Meta keywords
         keywords_tag = soup.find('meta', attrs={'name': 'keywords'})
         if keywords_tag and keywords_tag.get('content'):
             tags.extend([tag.strip() for tag in keywords_tag.get('content').split(',')])
         
-        # Article tags
         tag_elements = soup.find_all(['span', 'a'], class_=re.compile(r'tag|category|keyword', re.I))
         for element in tag_elements:
             text = element.get_text(strip=True)
             if text and len(text) < 30:
                 tags.append(text)
         
-        return list(set(tags))[:10]  # Limit to 10 unique tags
+        return list(set(tags))[:10]

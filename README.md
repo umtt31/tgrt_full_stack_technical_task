@@ -39,7 +39,7 @@ JWT tabanlı kimlik doğrulaması ile haber URL'lerinden içerik çıkaran full-
 
 ### 1. Repository'yi Klonlayın
 ```bash
-git clone <repository-url>
+git clone https://github.com/umtt31/tgrt_full_stack_technical_task
 cd tgrt_full_stack_technical_tast
 ```
 
