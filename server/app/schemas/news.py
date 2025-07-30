@@ -17,7 +17,7 @@ class NewsResponse(NewsBase):
     processed_image_url: Optional[str]
     video_url: Optional[str]
     processed_video_url: Optional[str]
-    meta_keywords: Optional[str]  # JSON string
+    meta_keywords: Optional[str]
     meta_lang: Optional[str]
     created_at: datetime
     user_id: int

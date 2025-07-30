@@ -19,7 +19,6 @@ async def extract_news(
     db: Session = Depends(get_db),
     current_user: User = Depends(AuthService.get_current_user)
 ):
-    # Use the advanced extractor for better metadata extraction
     extracted = await AdvancedNewsExtractor.extract_with_metadata(str(news_data.url))
     
     if not extracted["success"]:

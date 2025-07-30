@@ -1,13 +1,7 @@
-#!/usr/bin/env python3
-"""
-Test script for advanced news extraction
-"""
-
 import sys
 import os
 import asyncio
 
-# Add the current directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 async def test_advanced_extraction():
@@ -15,7 +9,6 @@ async def test_advanced_extraction():
     try:
         from app.services.advanced_extractor import AdvancedNewsExtractor
         
-        # Test URL from the user's example
         test_url = "https://www.haber7.com/dunya/haber/3551186-emekli-generalden-israili-sarsan-iddia-turkiye-israille-savasa-hazirlaniyor"
         
         print("Testing advanced news extraction...")
@@ -36,11 +29,12 @@ async def test_advanced_extraction():
             print(f"Word Count: {result.get('word_count')}")
             print(f"Reading Time: {result.get('reading_time')} minutes")
             print(f"Tags: {result.get('tags')}")
-            
-            # Show enhanced metadata
+
+            print(result)
+
             if result.get('og_data'):
                 print(f"Open Graph Data: {len(result['og_data'])} items")
-                for key, value in list(result['og_data'].items())[:3]:  # Show first 3
+                for key, value in list(result['og_data'].items())[:3]:
                     print(f"  {key}: {value}")
             
             if result.get('structured_data'):

@@ -15,7 +15,6 @@ function isAuthenticated() {
     const token = getToken();
     if (!token) return false;
     
-    // Check if token is expired (basic check)
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         return payload.exp > Date.now() / 1000;
@@ -38,7 +37,6 @@ function logout() {
     window.location.href = 'login.html';
 }
 
-// Login function
 async function login(username, password) {
     const formData = new FormData();
     formData.append('username', username);
@@ -54,7 +52,6 @@ async function login(username, password) {
             const data = await response.json();
             setToken(data.access_token);
             
-            // Get user info
             const userResponse = await fetch('/api/auth/me', {
                 headers: {
                     'Authorization': `Bearer ${data.access_token}`
@@ -74,8 +71,7 @@ async function login(username, password) {
         return { success: false, error: 'Bağlantı hatası' };
     }
 }
-
-// Register function
+    
 async function register(username, email, password) {
     try {
         const response = await fetch('/api/auth/register', {

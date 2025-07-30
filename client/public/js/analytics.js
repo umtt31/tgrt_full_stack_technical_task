@@ -1,5 +1,3 @@
-// Analytics and visualization functionality
-
 class NewsAnalytics {
   constructor() {
     this.charts = {};
@@ -187,5 +185,4 @@ class NewsAnalytics {
   }
 }
 
-// Initialize analytics when needed
 const analytics = new NewsAnalytics();

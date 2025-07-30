@@ -50,7 +50,6 @@
     <script src="public/js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Redirect if already logged in
             if (isAuthenticated()) {
                 window.location.href = 'index.html';
                 return;
@@ -65,7 +64,6 @@
                 const confirmPassword = document.getElementById('confirmPassword').value;
                 const alertDiv = document.getElementById('alert');
                 
-                // Validate passwords match
                 if (password !== confirmPassword) {
                     alertDiv.textContent = 'Şifreler eşleşmiyor';
                     alertDiv.className = 'alert alert-danger';

@@ -23,17 +23,14 @@ class AdvancedNewsExtractor(NewsExtractor):
                     og_data = AdvancedNewsExtractor._extract_og_metadata(html)
                     structured_data = AdvancedNewsExtractor._extract_structured_data(html)
                     
-                    # Enhanced date extraction from HTML
                     enhanced_publish_date = AdvancedNewsExtractor._extract_publish_date_from_html(html)
                     if enhanced_publish_date and not basic_content.get("publish_date"):
                         basic_content["publish_date"] = enhanced_publish_date
                     
-                    # Enhanced meta keywords extraction
                     enhanced_keywords = AdvancedNewsExtractor._extract_meta_keywords_from_html(html)
                     if enhanced_keywords:
                         basic_content["meta_keywords"] = enhanced_keywords
                     
-                    # Enhanced language detection
                     enhanced_lang = AdvancedNewsExtractor._extract_meta_lang_from_html(html)
                     if enhanced_lang:
                         basic_content["meta_lang"] = enhanced_lang
@@ -55,12 +52,9 @@ class AdvancedNewsExtractor(NewsExtractor):
     
     @staticmethod
     def _extract_publish_date_from_html(html: str) -> Optional[datetime]:
-        """Enhanced date extraction from HTML metadata"""
         try:
-            # Check for common date meta tags
             date_fields = ['datePublished', 'dateCreated', 'uploadDate', 'publishedTime']
             
-            # Look for JSON-LD structured data
             json_ld_pattern = r'<script type="application/ld\+json">(.*?)</script>'
             json_ld_matches = re.findall(json_ld_pattern, html, re.DOTALL)
             
@@ -76,7 +70,6 @@ class AdvancedNewsExtractor(NewsExtractor):
                 except:
                     continue
             
-            # Look for meta tags
             for field in date_fields:
                 meta_pattern = rf'<meta[^>]*property=["\']{field}["\'][^>]*content=["\']([^"\']+)["\']'
                 match = re.search(meta_pattern, html)
@@ -94,9 +87,7 @@ class AdvancedNewsExtractor(NewsExtractor):
     
     @staticmethod
     def _extract_meta_keywords_from_html(html: str) -> Optional[str]:
-        """Extract meta keywords from HTML"""
         try:
-            # Look for keywords in JSON-LD
             json_ld_pattern = r'<script type="application/ld\+json">(.*?)</script>'
             json_ld_matches = re.findall(json_ld_pattern, html, re.DOTALL)
             
@@ -113,7 +104,6 @@ class AdvancedNewsExtractor(NewsExtractor):
                 except:
                     continue
             
-            # Look for meta keywords tag
             meta_pattern = r'<meta[^>]*name=["\']keywords["\'][^>]*content=["\']([^"\']+)["\']'
             match = re.search(meta_pattern, html)
             if match:
@@ -128,15 +118,12 @@ class AdvancedNewsExtractor(NewsExtractor):
     
     @staticmethod
     def _extract_meta_lang_from_html(html: str) -> Optional[str]:
-        """Extract meta language from HTML"""
         try:
-            # Look for lang attribute in html tag
             lang_pattern = r'<html[^>]*lang=["\']([^"\']+)["\']'
             match = re.search(lang_pattern, html)
             if match:
                 return match.group(1)
             
-            # Look for meta language tag
             meta_pattern = r'<meta[^>]*http-equiv=["\']content-language["\'][^>]*content=["\']([^"\']+)["\']'
             match = re.search(meta_pattern, html)
             if match:

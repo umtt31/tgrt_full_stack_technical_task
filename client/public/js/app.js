@@ -1,11 +1,9 @@
-// Check authentication on page load
 document.addEventListener("DOMContentLoaded", function () {
   if (!isAuthenticated()) {
     window.location.href = "login.html";
     return;
   }
 
-  // Set username
   const user = getCurrentUser();
   if (user) {
     document.getElementById(
@@ -13,10 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
     ).textContent = `Merhaba, ${user.username}`;
   }
 
-  // Initialize DataTable
   initializeNewsTable();
 
-  // Initialize form
   document
     .getElementById("newsForm")
     .addEventListener("submit", handleNewsSubmit);
@@ -47,7 +43,6 @@ async function handleNewsSubmit(e) {
       showSuccess("Haber başarıyla çıkarıldı!");
       document.getElementById("newsUrl").value = "";
 
-      // Refresh table
       $("#newsTable").DataTable().ajax.reload();
     } else {
       const error = await response.json();
@@ -133,7 +128,6 @@ function initializeNewsTable() {
               );
             }
           } catch (e) {
-            // If parsing fails, try to display as string
             if (data.trim()) {
               return `<span class="keyword-tag">${data}</span>`;
             }
@@ -198,12 +192,10 @@ async function deleteNews(id) {
 }
 
 function viewNews(id) {
-  // Redirect to news detail page
   window.location.href = `news-detail.html?id=${id}`;
 }
 
 function showSuccess(message) {
-  // Simple alert - can be replaced with toast notifications
   alert(message);
 }
 

@@ -1,20 +1,12 @@
-#!/usr/bin/env python3
-"""
-Test script for enhanced news extraction
-"""
-
 import sys
 import os
 
-# Add the current directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 def test_enhanced_extraction():
-    """Test the enhanced news extraction with the Turkish news URL"""
     try:
         from app.services.news_extractor import NewsExtractor
         
-        # Test URL from the user's example
         test_url = "https://www.haber7.com/dunya/haber/3551186-emekli-generalden-israili-sarsan-iddia-turkiye-israille-savasa-hazirlaniyor"
         
         print("Testing enhanced news extraction...")
