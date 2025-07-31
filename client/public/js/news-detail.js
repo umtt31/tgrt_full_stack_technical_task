@@ -1,3 +1,4 @@
+// Global variable to store current news data
 let currentNews = null;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -62,6 +63,35 @@ function displayNewsDetail(news) {
     contentElement.innerHTML = '<p class="text-muted">İçerik bulunamadı</p>';
   }
 
+  // Handle video display
+  const videoContainer = document.getElementById("newsVideoContainer");
+  const videoElement = document.getElementById("newsVideo");
+  const videoSource = document.getElementById("videoSource");
+
+  if (news.video_url) {
+    // Check if it's an iframe embed (YouTube, Vimeo, etc.)
+    if (
+      news.video_url.includes("youtube.com") ||
+      news.video_url.includes("vimeo.com") ||
+      news.video_url.includes("dailymotion.com") ||
+      news.video_url.includes("facebook.com")
+    ) {
+      // Create iframe for embedded videos
+      videoContainer.innerHTML = `
+        <div class="video-container">
+          <iframe src="${news.video_url}" frameborder="0" allowfullscreen></iframe>
+        </div>
+      `;
+    } else {
+      // Direct video file
+      videoSource.src = news.video_url;
+      videoElement.load();
+    }
+    videoContainer.classList.remove("d-none");
+  } else {
+    videoContainer.classList.add("d-none");
+  }
+
   const imageContainer = document.getElementById("newsImageContainer");
   const imageElement = document.getElementById("newsImage");
   if (news.image_url) {
@@ -102,6 +132,16 @@ function displayNewsDetail(news) {
     metaLanguageElement.textContent = "Belirtilmemiş";
   }
 
+  // Display video info in sidebar
+  const videoSection = document.getElementById("videoSection");
+  const videoLink = document.getElementById("videoLink");
+  if (news.video_url) {
+    videoLink.href = news.video_url;
+    videoSection.style.display = "block";
+  } else {
+    videoSection.style.display = "none";
+  }
+
   const keywordsSection = document.getElementById("keywordsSection");
   const metaKeywordsElement = document.getElementById("metaKeywords");
   if (news.meta_keywords) {
@@ -127,7 +167,7 @@ function displayNewsDetail(news) {
   } else {
     keywordsSection.style.display = "none";
   }
-  
+
   const wordCount = news.content ? news.content.split(/\s+/).length : 0;
   const readingTime = Math.ceil(wordCount / 200);
 
